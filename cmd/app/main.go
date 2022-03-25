@@ -24,7 +24,7 @@ var albums = []Album{
 func main() {
 	router := gin.Default()
 	fmt.Print("hello world")
-	router.GET("/albums", findAlbums)
+	router.GET("/hello", findAlbums)
 	router.Run("localhost:8000")
 }
 
