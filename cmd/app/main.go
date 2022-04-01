@@ -11,13 +11,14 @@ import (
 func main() {
 	router := gin.Default()
 
-	db, _ := db.Connect()
-	userRepository := repository.InitUserRepository(db)
+	dB, _ := db.Connect()
+	userRepository := repository.InitUserRepository(dB)
 	userService := service.InitUserInterface(userRepository)
 	userController := controller.InitUserController(userService)
 
 	users := router.Group("user")
-	users.GET("/validate/:id", userController.ValidateUser)
+	users.POST("/", userController.Save)
+	users.GET("/:id", userController.FindUserById)
 	users.GET("/all", userController.FindAll)
 
 	router.Run("localhost:8000")
