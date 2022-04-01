@@ -17,7 +17,7 @@ func main() {
 	userController := controller.InitUserController(userService)
 
 	users := router.Group("user")
-	users.POST("/validate", userController.ValidateUser)
+	users.GET("/validate/:id", userController.ValidateUser)
 	users.GET("/all", userController.FindAll)
 
 	router.Run("localhost:8000")

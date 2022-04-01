@@ -2,6 +2,7 @@ package repository
 
 import (
 	"gorm.io/gorm"
+	"log"
 	"my_go/pkg/models"
 )
 
@@ -26,7 +27,8 @@ func (u userRepository) FindAll() (users []models.User, err error) {
 
 func (u userRepository) FindById(id string) (models.User, error) {
 	//TODO implement me
+	log.Print("Repo" + id)
 	var user = models.User{}
-	err := u.Db.Model(&user).Where("id=?", id).Error
+	err := u.Db.Where("id=?", id).Find(&user).Error
 	return user, err
 }

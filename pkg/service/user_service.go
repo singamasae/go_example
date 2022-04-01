@@ -19,7 +19,7 @@ type UserServiceInterface interface {
 
 func (u userService) FindAll() []models.User {
 	//TODO implement me
-	var users = []models.User{}
+	var users []models.User
 	users, _ = u.userRepository.FindAll()
 	return users
 }
@@ -30,12 +30,13 @@ func InitUserInterface(i repository.UserRepositoryInterface) UserServiceInterfac
 
 func (u userService) ValidateUser(id string) bool {
 	//TODO implement me
-	user, err := u.userRepository.FindById(id)
-	if err != nil {
+	user, _ := u.userRepository.FindById(id)
+
+	if &user == nil {
 		return false
 	}
 
-	log.Print(user.Username)
-
+	log.Print("result-> " + user.Username)
 	return true
+
 }
