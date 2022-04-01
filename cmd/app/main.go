@@ -1,34 +1,24 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"my_go/pkg/controller"
+	"my_go/pkg/db"
+	"my_go/pkg/repository"
+	"my_go/pkg/service"
 )
-
-// Album represents data about a record album.
-type Album struct {
-	Id     string  `json:"Id"`
-	Title  string  `json:"title"`
-	Artist string  `json:"artist"`
-	Price  float64 `json:"price"`
-}
-
-// albums slice to seed record album data.
-var albums = []Album{
-	{Id: "1", Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
-	{Id: "2", Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
-	{Id: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
-}
 
 func main() {
 	router := gin.Default()
-	fmt.Print("hello world")
-	router.GET("/hello", findAlbums)
-	router.Run("localhost:8000")
-}
 
-func findAlbums(c *gin.Context) {
-	fmt.Println(albums)
-	c.IndentedJSON(http.StatusOK, albums)
+	db, _ := db.Connect()
+	userRepository := repository.InitUserRepository(db)
+	userService := service.InitUserInterface(userRepository)
+	userController := controller.InitUserController(userService)
+
+	users := router.Group("user")
+	users.POST("/validate", userController.ValidateUser)
+	users.GET("/all", userController.FindAll)
+
+	router.Run("localhost:8000")
 }
